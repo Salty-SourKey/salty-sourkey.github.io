@@ -9,9 +9,14 @@ layout: default
 {% endif %}
 
   <h1>{{ site.title }}</h1>
-  {% if site.theme_config.show_description == true %}
-    <p>{{ site.description }}</p>
-  {% endif %}
+  <div style="display: flex; align-items: center;">
+    {% if site.profile_picture %}
+      <img src="{{ site.profile_picture | relative_url }}" alt="Profile Picture" style="width: 187.5px; height: 187.5px; margin-right: 20px;">
+    {% endif %}
+    {% if site.theme_config.show_description == true %}
+      <p>{{ site.description }}</p>
+    {% endif %}
+  </div>
 </header>
 
 {{ content }}
@@ -26,15 +31,17 @@ layout: default
   {% include vertical_list.html collection=site.data.home.misc_entries %}
 {% endif %}
 
+{% if site.theme_config.show_publications == true %}
+  <h2>{{ site.theme_config.home.title_publications }}</h2>
+  {% include publication_list.html %}
+{% endif %}
+
 {% if site.theme_config.show_blog == true %}
   <h2>{{ site.theme_config.home.title_blog }}</h2>
   {% include post_list.html %}
 {% endif %}
 
-{% if site.theme_config.show_old_projects == true %}
-  <h2>{{ site.theme_config.home.title_old_projects }}</h2>
-  {% include card_list.html collection=site.data.home.old_project_entries %}
-{% endif %}
+
 
 
 {% if site.theme_config.show_footer == true %}
