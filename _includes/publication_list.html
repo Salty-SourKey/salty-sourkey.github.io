@@ -1,6 +1,6 @@
 {% for publication in site.data.home.publication_entries %}
   <div class="publication">
     <h3>{{ publication.title }}</h3>
-    <p>{{ publication.desc }}</p>
+    {{ publication.desc | markdownify }}
   </div>
 {% endfor %}
