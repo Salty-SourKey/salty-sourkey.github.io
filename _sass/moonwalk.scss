@@ -110,8 +110,13 @@ html, body {
 h1, h2, h3, h4, h5, h6 {
     color: var(--headings);
 }
-p, strong, b, em, small, li, hr, table, figcaption {
+p, strong, b, em, small, li, hr, table {
     color: var(--text);
+}
+
+figcaption {
+    color: var(--text);
+    text-align: center;
 }
 .highlight, pre code, blockquote {
   border-radius: 0.5em;
