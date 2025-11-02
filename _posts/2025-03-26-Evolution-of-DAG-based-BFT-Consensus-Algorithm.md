@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Evolution of DAG-based BFT Consensus Protocol
+title: Evolution of DAG-based BFT Consensus Algorithm
 author: Sejin Hwang
 tags: [consensus]
 use_math: true
@@ -15,7 +15,7 @@ use_math: true
 분산 시스템에서 발생하는 일부 구성 요소의 실패(하드웨어 고장 또는 소프트웨어 오류로 인한 서버 크래쉬) 또는 임의의 악의적인 행동에 대한 내성(정의되어 있는 프로토콜을 벗어난 모든 임의의 행동)
 
 ## 합의 알고리즘
-분산 시스템에서 합의 과정의 참여자들이 단일 값에 대한 합의에 도달한다는 것(safety), 그리고 이러한 합의가 멈추지 않고 지속해서 이루어질 수 있음(liveness)을 보장하는 알고리즘
+분산 시스템에서 합의 과정의 참여자들이 단일 값에 대한 합의에 도달한다는 것(Safety), 그리고 이러한 합의가 멈추지 않고 지속해서 이루어질 수 있음(Liveness)을 보장하는 알고리즘
 
 ## BFT 합의 알고리즘
 분산 시스템에서 발생하는 일부 구성 요소의 실패 또는 임의의 악의적 행동에 내성이 있는 합의 알고리즘
@@ -78,7 +78,7 @@ use_math: true
 ### 문제 정의: 비동기 네트워크 환경에서 Byzantine Atomic Broadcast(BAB)의 효율적 해결
 BAB는 $n \ge 3f+1$일 때, 모든 정직한 참여자는 임의의 정직한 참여자가 전파한 Vertex를 반드시 수신한다는 것 그리고 동일한 순서로 Vertex를 Commit한다는 것을 보장하는 프로토콜
 
-### 해결 방: 서로 비동기적으로 동작하는 Two-Layered 아키텍처(Communication and Consensus Layer)
+### 해결 방식: 서로 비동기적으로 동작하는 Two-Layered 아키텍처(Communication and Consensus Layer)
 - Communication Layer: 각 참여자는 정해진 규칙에 따라 Vertex 전파 및 수신을 하여 로컬 DAG를 지속적으로 구축
 - Consensus Layer: 추가적인 Communication 없이 각 참여자는 자신의 로컬 DAG를 해석하여 Vertex의 Total Order를 결정
 
@@ -103,7 +103,7 @@ BAB는 $n \ge 3f+1$일 때, 모든 정직한 참여자는 임의의 정직한 �
 
 <subfigure>
   <img src="./images/2025-03-26/localdag.png" width="100%">
-  <figcaption>참여자 4가 Round 6에서 전파한 vertex v2를 수신하지 못하고 v3를 전파한 참여자 1</figcaption>
+  <figcaption>참여자 4가 Round 6에서 전파한 vertex $v_2$를 수신하지 못하고 $v_3$를 전파한 참여자 1</figcaption>
 </subfigure> 
 
 ## DAG-Rider의 Consensus Layer
@@ -113,14 +113,14 @@ DAG-Rider의 Consensus Layer는 추가적인 Communication 없이 로컬 DAG를 
 <subfigure>
   <img src="./images/2025-03-26/rider1.png" width="100%">
 </subfigure> 
-Commit Rule을 위해 각 참여자는 로컬 DAG를 연속된 4개 Round로 구성된 Wave로 나누며, 이때, Wave w의 k번째 Round를 round(w, k)라고 한다. DAG-Rider의 Vertex Commit은 다음과 같은 순서로 진행된다.
+Commit Rule을 위해 각 참여자는 로컬 DAG를 연속된 4개 Round로 구성된 Wave로 나누며, 이때, Wave w의 k번째 Round를 round(w, k)라고 한다.
 
 <br>
 <br>
 
 <subfigure>
   <img src="./images/2025-03-26/rider2.png" width="100%">
-  <figcaption>Wave 1의 Leader Vertex v1 선정</figcaption>
+  <figcaption>Wave 1의 Leader Vertex $v_1$ 선정</figcaption>
 </subfigure>
 Wave의 마지막인 4번째 Round의 종료, 즉, $\vert DAG[round(w,4)] \vert \le 2f+1$이 될 시, DAG[round(w,1)] 속 Vertex 중 Wave w의 Leader v 선정한다. 이때, 만약 Leader v가 로컬 DAG에 없다면 해당 Wave는 Commit하지 않고 스킵한다. 
 
@@ -129,7 +129,7 @@ Wave의 마지막인 4번째 Round의 종료, 즉, $\vert DAG[round(w,4)] \vert 
 
 <subfigure>
   <img src="./images/2025-03-26/rider3.png" width="100%">
-  <figcaption>Strong Path에 있는 Vertex가 하나밖에 없는 v1은 Commit Rule은 만족하지 못함</figcaption>
+  <figcaption>Strong Path에 있는 Vertex가 하나밖에 없는 $v_1$은 Commit Rule은 만족하지 못함</figcaption>
 </subfigure> 
 <br>
 <subfigure>
@@ -139,12 +139,12 @@ Wave의 마지막인 4번째 Round의 종료, 즉, $\vert DAG[round(w,4)] \vert 
 <br>
 <subfigure>
   <img src="./images/2025-03-26/rider5.png" width="100%">
-  <figcaption>Wave 2의 Leader Vertex v2 선정</figcaption>
+  <figcaption>Wave 2의 Leader Vertex $v_2$ 선정</figcaption>
 </subfigure>
 <br>
 <subfigure>
   <img src="./images/2025-03-26/rider6.png" width="100%">
-  <figcaption>v2는 Commit Rule을 만족하여 Leader Stack에 Push</figcaption>
+  <figcaption>$v_2$는 Commit Rule을 만족하여 Leader Stack에 Push</figcaption>
 </subfigure> 
 Leader v 선정 이후, 해당 Leader와 Strong Path에 있는 DAG[round(w,4)] 속 Vertex가 2f+1개 이상이라면 v를 Leader Stack에 Push한다. 이때 Strong Path는 오직 Strong Edge만으로 구성된 Path를 의미한다.
 
@@ -165,3 +165,44 @@ Leader v 선정 이후, 해당 Leader와 Strong Path에 있는 DAG[round(w,4)] �
 </subfigure> 
 이를 Total Order가 아직 결정되지 않은 Wave까지 반복하고, Leader Stack을 Pop해가며, Pop된 Leader의 Causal History 중 아직 Total Order에 포함되지 않은 Vertex를 임의의 결정론적인 순서(참여자 ID 순서)로 Commit하여 Total Order를 결정한다.
 
+### DAG-Rider의 Safety
+DAG-based BFT 합의 알고리즘의 Safety란 모든 참여자가 동일한 Vertex Total Order를 가지는 것이며, 이는 이전에 서술했듯 모든 참여자가 동일한 Leader Commit Sequence를 가지면 보장이 된다. 이를 위해 DAG-Rider는 **임의의 정직한 참여자 i가 Wave w에서 Vertex v를 Commit했다면, 모든 정직한 참여자가 Wave w’ > w에서 Commit하는 Leader Vertex u는 반드시 v와 Strong Path를 가짐**을 보장해야 한다. 해당 성질이 보장된다면, 임의의 참여자가 Commit한 특정 Wave의 Leader Vertex를 해당 Wave에서 Commit하지 못하고 넘어가도, 미래 Wave의 Leader Vertex를 Commit하는 과정에서 해당 Vertex는 임의의 정직한 참여자가 Commit했지만 자신은 스킵했던 과거 Leader Vertex와 반드시 Strong Path를 가지게 된다. 이를 통해, 이전 Wave를 확인하는 Commit Rule이 자신은 스킵했지만 다른 참여자가 Commit했을 수 있는 과거 Wave Leader를 반드시 Indirectly Commit한다. 따라서 모든 참여자가 동일한 Leader Commit Sequence를 가지게 된다.
+
+#### 임의의 정직한 참여자 i가 Wave w에서 Vertex v를 Commit했다면, 모든 정직한 참여자가 Wave w’ > w에서 Commit하는 Leader Vertex u는 반드시 v와 Strong Path를 가짐의 증명
+1. 참여자 i가 Wave w에서 Vertex v를 Commit했기에, 참여자 i의 로컬 DAG에는 v와 Strong Path에 있는 DAG[round(w, 4)] 속 Vertex가 2f+1개 이상
+
+2. 참여자 i의 DAG[round(w, 4)] 속 Vertex와 또다른 임의의 참여자의 DAG[round(w, 4)] 속 Vertex는 최소 f+1개의 공통된 Vertex를 가짐
+  - 각 Round는 2f+1개의 Vertex로 구성되며, 전체 집합의 크기가 3f+1일 때 크기가 2f+1인 부분 집합들의 교집합 크기는 최소 f+1
+  - 즉, 임의의 정직한 참여자의 DAG[round(w, 4)] 속 Vertex 중 Vertex v와 Strong Path에 있는 집합 V의 크기는 f+1 이상
+
+3. Vertex u를 포함한 Wave w’ > w의 Vertex v’는 이전 Round Vertex 2f+1개를 Strong Edge로 가리키고 있어야 하기에, V 속 최소 하나의 Vertex와 Strong Path를 가짐
+  - 전체 집합의 크기가 3f+1일 때, 크기가 2f+1인 부분 집합과 크기가 f+1인 부분 집합의 교집합 크기는 최소 1
+
+4. 따라서, 임의의 정직한 참여자 i가 Wave w에서 Vertex v를 Commit했다면, 모든 정직한 참여자가 Wave w’ > w에서 Commit하는 Leader Vertex u는 반드시 v와 Strong Path를 최소 하나를 가짐
+
+하지만 방금 증명한 성질은 과거 Round에서 임의의 참여자가 Commit한 Leader Vertex는 내가 Commit한 Leader Vertex와 반드시 Strong Path가 있다는 것을 보장해주는 것이다. 즉, 이 성질은 내가 Commit한 Leader Vertex와 Strong Path가 없는 과거 Leader는 어떠한 정직한 참여자에서도 Commit되지 않았음이 보장되니 스킵하는 것이 맞다는 것을 보장해 주는 것이지, 내가 Commit하는 Leader Vertex와 Strong Path가 있다고 해당 Leader Vertex가 임의의 참여자에서 Commit된 Leader Vertex라는 것을 반드시 보장해주지 않는다.
+- 성립하는 명제: 임의의 참여자가 과거에 Commit → Strong Path 존재
+- 성립하는 명제: Strong Path 존재 X → 어떠한 참여자도 과거에 Commit하지 않음
+- 성립하지 않는 명제: Strong Path 존재 → 임의의 참여자가 과거에 Commit
+
+<subfigure>
+  <img src="./images/2025-03-26/rider7.png" width="100%">
+</subfigure> 
+하지만 이는 상관이 없다. 위 그림 상에서 내가 Commit할 $v_2$와 Strong Path에 있는 $v_1$이 다른 참여자가 Commit했던 말던 상관 없이, 내가 Commit Rule에 의해 $v_1$을 Commit하니 다른 참여자 또한 언젠가는 $v_2$를 반드시 Commit하고 $v_2$의 Causal History에 의해 모든 참여자가 $v_1$-$v_2$라는 동일한 Leader Commit Sequence를 가지게 된다.
+
+## DAG-Rider의 한계
+
+**실용적이지 않은 Commit 지연 시간**
+<subfigure>
+  <img src="./images/2025-03-26/rb.png" width="40%">
+</subfigure> 
+DAG-Rider는 비동기 네트워크 환경에서의 Byzantine Atomic Broadcast 문제 중 “임의의 정직한 참여자가 전파한 Vertex는 모든 정직한 참여자가 수신해야 한다는 것”을 보장하기 위해 Reliable Broadcast 사용하며, 이는 하나의 Vertex 전파를 위해 총 3번의 메시지 교환 단계를 수행한다. 즉, Vertex 하나의 전파 과정 자체가 Leader-based BFT 합의 알고리즘의 Commit 지연 시간만큼 소요된다. 따라서 DAG-Rider는 일반적인 Leader-based 합의 방식보다 수십 배 높은 지연 시간을 가진다.
+
+## DAG-Rider의 지연 시간 계산
+<subfigure>
+  <img src="./images/2025-03-26/riderLatency.png" width="100%">
+</subfigure>
+
+각 Vertex마다 Commit될 때까지 소요되는 메시지 교환 단계의 개수는 위와 같다. 예를 들어, Leader Vertex $v_2$의 Direct Commit에 의해 round(1, 4)의 Vertex가 Commit되기 위해서는 총 15번(Vertex 자신이 전파되기까지 3번 메시지 교환 + $v_2$가 Commit될 때까지 4개의 Round가 진행되며, 각 Round의 Vertex 전파 과정은 3번 메시지 교환을 동반) 소요된다.
+
+또한 Leader Indirect Commit의 경우, Direct Commit 시 소요되는 지연 시간의 상수배만큼의 지연 시간을 야기한다.
