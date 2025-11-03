@@ -75,3 +75,15 @@ Safety 보장 조건인 Quorum Intersection을 만족하기 위한 $\frac {n+f} 
 전체 노드 수가 10개일 때, 일반적인 BFT 합의 알고리즘은 최대 3개의 비잔틴 노드까지 견딜 수 있다. 하지만 이를 넘어서는 4개의 비잔틴 노드(n1, n2, n3, n4)가 존재하고 그 중 하나가 블록을 제안하는 리더라면 정직한 노드들이 서로 다른 블록을 수락하게 만드는 Forking Attack을 가할 수 있다.
 
 리더인 n1이 서로 다른 두 개의 블록 a 그리고 b를 두 개의 정직한 노드 집합에 각각 전파하고 모든 비잔틴 노드들이 해당하는 두 블록 모두에 동시에 투표를 한다면, 블록 a 그리고 b는 동시에 정족수를 만족할 수 있다. 이를 통해 정직한 노드들이 서로 다른 블록을 수락하게 만드는 Forking Attack을 성공시킬 수 있다.
+
+# Why should we care about this?
+사실 현재 운용 중인 대부분의 공개 블록체인에서 비잔틴 활동은 거의 발견되지 않는다고 함
+- 이더리움에서 대부분의 슬래싱 원인은 악의적인 행동이 아닌 실수 또는 의도치 않은 에러라고 함
+- “Byzantine failures are rare as validators are highly protected, isolated, and economically incentivized to follow the protocol, more common are validators that are unresponsive.” by Spiegelman et at. 2024
+
+그럼에도 불구하고 임의의 집단의 1/3 이상이 비잔틴으로 오염되는 상황은 고려해야 할 필요가 있는 문제임
+- 일반적인 BFT 합의 알고리즘 논문은 모든 노드가 합의에 참여하는 것을 가정하지만, 이는 확장성 문제로 인하여 실제 블록체인 환경에 적용하기에는 적합하지 않음
+- 따라서, 전체 노드 집합에서 뽑은 작은 크기의 합의체가 합의를 진행하는 방법이 고려될 수 있음
+- 하지만, $f < \frac n 3$ 가정에서 합의체를 선출할 때, 선출된 합의체의 1/3 이상이 비잔틴 노드일 확률이 높음
+    - 전체 노드 수가 100개 그리고 비잔틴 노드 수가 33개인 상황에서 10개의 노드로 구성된 합의체를 뽑을 때, 해당 합의체의 1/3 이상이 비잔틴일 확률은 아래와 같음
+    - $\sum_{b=4}^{10} \frac{\binom{67}{10-b} \binom{33}{b}}{\binom{100}{10}} \approx 43\%$
